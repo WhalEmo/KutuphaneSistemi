@@ -8,8 +8,8 @@ public class Kitap {
 
     public Kitap(int ID, String baslik, String yazar, int yayinYili, String ISBN, int adet) {
         this.ID = ID;
-        Baslik = baslik;
-        Yazar = yazar;
+        Baslik = BasHarfDzn(baslik);
+        Yazar = BasHarfDzn(yazar);
         YayinYili = yayinYili;
         this.ISBN = ISBN;
         Adet = adet;
@@ -28,7 +28,7 @@ public class Kitap {
     }
 
     public void setBaslik(String baslik) {
-        Baslik = baslik;
+        Baslik = BasHarfDzn(baslik);
     }
 
     public String getYazar() {
@@ -36,7 +36,7 @@ public class Kitap {
     }
 
     public void setYazar(String yazar) {
-        Yazar = yazar;
+        Yazar = BasHarfDzn(yazar);
     }
 
     public int getYayinYili() {
@@ -61,5 +61,11 @@ public class Kitap {
 
     public void setAdet(int adet) {
         Adet = adet;
+    }
+
+    public static String BasHarfDzn(String veri){
+        veri = veri.toLowerCase();
+        veri = veri.substring(0,1).toUpperCase()+veri.substring(1).toLowerCase();
+        return veri;
     }
 }

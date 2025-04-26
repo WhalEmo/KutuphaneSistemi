@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class KitapServisi {
 
-    public Kitap KitapKarsilastirma(Kitap k1, Kitap k2){
+    private Kitap KitapKarsilastirma(Kitap k1, Kitap k2){
         if(!k2.getBaslik().isEmpty()){
             k1.setBaslik(k2.getBaslik());
         }
@@ -162,6 +162,34 @@ public class KitapServisi {
             Connection baglanti = VeriTabaniBaglantisi.Baglanti();
             PreparedStatement sorgu = baglanti.prepareStatement(sqlSorgu);
             sorgu.setInt(1,Tarih);
+            ResultSet sonuc = sorgu.executeQuery();
+            while (sonuc.next()){
+                Kitap kitap = new Kitap(
+                        sonuc.getInt("ID"),
+                        sonuc.getString("Baslik"),
+                        sonuc.getString("Yazar"),
+                        sonuc.getInt("YayinYili"),
+                        sonuc.getString("ISBN"),
+                        sonuc.getInt("Adet")
+                );
+                kitaplar.add(kitap);
+            }
+            baglanti.close();
+        }catch (Exception e){
+            System.out.println("Hata: "+e.getMessage());
+        }
+        return kitaplar;
+    }
+
+    public ArrayList<Kitap> YazarKitaplari(String Yazar){
+        ArrayList<Kitap> kitaplar = new ArrayList<Kitap>();
+        String sqlSorgu = "SELECT * FROM Kitap WHERE Yazar = ?";
+        Yazar = Kitap.BasHarfDzn(Yazar);
+
+        try{
+            Connection baglanti = VeriTabaniBaglantisi.Baglanti();
+            PreparedStatement sorgu = baglanti.prepareStatement(sqlSorgu);
+            sorgu.setString(1,Yazar);
             ResultSet sonuc = sorgu.executeQuery();
             while (sonuc.next()){
                 Kitap kitap = new Kitap(
