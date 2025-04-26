@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+
+  veritabani:
+    image: postgres:15
+    container_name: ortak_veritabani
+    environment:
+      POSTGRES_DB: kutuphane
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  veritabani-servisi:
+    build: ./VeriTabaniServisi
+    depends_on:
+      - veritabani
+    command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "veritabaniservisi.jar"]
+  kullanici-servisi:
+    build: ./KullaniciYonetimi
+    depends_on:
+      - veritabani
+    command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "kullaniciservis.jar"]
+  kitap-servisi:
+    build: ./KitapKatalogu
+    depends_on:
+      - veritabani
+    command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "kitapservis.jar"]
+
+volumes:
+  postgres_data:
