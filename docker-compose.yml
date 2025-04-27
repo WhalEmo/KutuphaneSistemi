@@ -18,16 +18,25 @@ services:
     depends_on:
       - veritabani
     command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "veritabaniservisi.jar"]
+  
   kullanici-servisi:
     build: ./KullaniciYonetimi
     depends_on:
       - veritabani
     command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "kullaniciservis.jar"]
+  
   kitap-servisi:
     build: ./KitapKatalogu
     depends_on:
       - veritabani
     command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "kitapservis.jar"]
+
+  odunc-servisi:
+    build: ./OduncSistemi
+    depends_on:
+      - veritabani
+    command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "oduncservis.jar"]
+
 
 volumes:
   postgres_data:
