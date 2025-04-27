@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class TestMain {
-    public static void main(String[] args) {
+    public void eskimain(String[] args) {
         KullaniciServisi servis = new KullaniciServisi();
         String email = "beyza66uygun@gmail.com";
         String sifre = "145316";
