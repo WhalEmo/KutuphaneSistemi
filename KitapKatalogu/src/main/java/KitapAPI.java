@@ -45,6 +45,7 @@ public class KitapAPI {
                 String satir = br.readLine();
                 while(satir != null){
                     veriler.append(satir);
+                    satir = br.readLine();
                 }
                 String gelenVeriler = veriler.toString();
                 Kitap kitap = kitapServisi.GelenVeriKitapOltr(gelenVeriler);
@@ -60,8 +61,6 @@ public class KitapAPI {
                 OutputStream gonder = islem.getResponseBody();
                 gonder.write(mesaj.getBytes());
                 gonder.close();
-                br.close();
-                isr.close();
             }
         }));
         server.createContext("/kitapEkle",(islem->{
@@ -72,11 +71,12 @@ public class KitapAPI {
                 String satir = br.readLine();
                 while(satir != null){
                     veriler.append(satir);
+                    satir = br.readLine();
                 }
                 String gelenVeriler = veriler.toString();
                 Kitap kitap = kitapServisi.GelenVeriKitapOltr(gelenVeriler);
                 String mesaj;
-                if(kitapServisi.KitapGuncelle(kitap)){
+                if(kitapServisi.KitapEkle(kitap)){
                     mesaj = "Kitap başarılı bir şekilde eklendi: " + kitap.getBaslik();
                     islem.sendResponseHeaders(200,mesaj.getBytes().length);
                 }
@@ -87,8 +87,6 @@ public class KitapAPI {
                 OutputStream gonder = islem.getResponseBody();
                 gonder.write(mesaj.getBytes());
                 gonder.close();
-                br.close();
-                isr.close();
             }
         }));
         server.createContext("/kitapTarih",(islem->{
@@ -127,5 +125,7 @@ public class KitapAPI {
                 gonder.close();
             }
         }));
+
+        server.start();
     }
 }

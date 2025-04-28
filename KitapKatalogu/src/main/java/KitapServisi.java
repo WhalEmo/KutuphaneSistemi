@@ -37,7 +37,7 @@ public class KitapServisi {
             ResultSet sonuc = sorgu.executeQuery();
             if(sonuc.next()){
                 kitap = new Kitap(
-                        0,
+                        ID,
                         sonuc.getString("Baslik"),
                         sonuc.getString("Yazar"),
                         sonuc.getInt("YayinYili"),

@@ -29,6 +29,8 @@ services:
   
   kitap-servisi:
     build: ./KitapKatalogu
+    ports:
+      - "2402:2402"
     depends_on:
       - veritabani
     command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "kitapservis.jar"]
