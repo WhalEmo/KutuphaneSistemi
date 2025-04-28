@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class TestMain {
-    public static void main(String[] args) {
+    public void main(String[] args) {
         KitapServisi servis = new KitapServisi();
         Kitap k1 = new Kitap(0,"Vertherin AcilAri","Bilinmeyen",2005,"11234",5);
         Kitap k2 = new Kitap(0,"Vertherin AgriLaRi","Bebegimm",2005,"11254",10);

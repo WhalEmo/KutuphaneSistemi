@@ -21,6 +21,8 @@ services:
   
   kullanici-servisi:
     build: ./KullaniciYonetimi
+    ports:
+      - "1453:1453"
     depends_on:
       - veritabani
     command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "kullaniciservis.jar"]

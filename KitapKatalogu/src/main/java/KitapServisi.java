@@ -1,3 +1,5 @@
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -207,5 +209,35 @@ public class KitapServisi {
             System.out.println("Hata: "+e.getMessage());
         }
         return kitaplar;
+    }
+
+    public Kitap GelenVeriKitapOltr(String veriButunu){
+        String[] parcaciklar = veriButunu.split("&");
+        Kitap kitap = new Kitap(
+                Integer.valueOf(UTF8(parcaciklar[0].split("=")[1])),
+                UTF8(parcaciklar[1].split("=")[1]),
+                UTF8(parcaciklar[2].split("=")[1]),
+                Integer.valueOf(UTF8(parcaciklar[3].split("=")[1])),
+                UTF8(parcaciklar[4].split("=")[1]),
+                Integer.valueOf(UTF8(parcaciklar[5].split("=")[1]))
+        );
+        return kitap;
+    }
+    public String UTF8(String metin){
+        return URLDecoder.decode(metin, StandardCharsets.UTF_8);
+    }
+
+    public String KitaplarText(ArrayList<Kitap> kitaplar){
+        StringBuilder mesaj = new StringBuilder();
+        for (Kitap kitap : kitaplar){
+            mesaj.append(kitap.getID() + ",\n");
+            mesaj.append(kitap.getBaslik() + ",\n");
+            mesaj.append(kitap.getYazar() + ",\n");
+            mesaj.append(kitap.getYayinYili() + ",\n");
+            mesaj.append(kitap.getISBN() + ",\n");
+            mesaj.append(kitap.getAdet() + ",\n");
+            mesaj.append("&\n");
+        }
+        return mesaj.toString();
     }
 }
