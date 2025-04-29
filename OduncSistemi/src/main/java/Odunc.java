@@ -12,8 +12,8 @@ public class Odunc {
         this.ID = ID;
         KullaniciID = kullaniciID;
         KitapID = kitapID;
-        OduncTarihi = oduncTarihi;
-        IadeTarihi = iadeTarihi;
+        OduncTarihi = LocalDate.now();
+        IadeTarihi = this.OduncTarihi.plusDays(14);
         TeslimEdildi = teslimEdildi;
     }
 
