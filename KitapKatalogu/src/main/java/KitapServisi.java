@@ -26,6 +26,28 @@ public class KitapServisi {
         return k1;
     }
 
+    public String KitapAdetCikartEkle(int ID, boolean EkleMi){
+        Kitap kitap = KitapAra(ID);
+        if(kitap==null){
+            return "Kitap bulunamadı!!:0";
+        }
+        else if(!EkleMi){
+            if(kitap.getAdet()==0){
+                return "Kitap verilemez kalmamış:1";
+            }
+            else{
+                kitap.setAdet(kitap.getAdet()-1);
+                KitapGuncelle(kitap);
+                return "Kitap verildi!!:2";
+            }
+        }
+        else{
+            kitap.setAdet(kitap.getAdet()+1);
+            KitapGuncelle(kitap);
+            return "Kitap adeti eklendi!:3";
+        }
+    }
+
     public Kitap KitapAra(int ID){
         String sqlSorgusu = "SELECT * FROM Kitap WHERE ID = ?";
         Kitap kitap;

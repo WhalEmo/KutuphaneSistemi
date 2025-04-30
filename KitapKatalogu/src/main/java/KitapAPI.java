@@ -126,6 +126,26 @@ public class KitapAPI {
             }
         }));
 
+        server.createContext("kitapec",(islem->{
+            if("GET".equals(islem.getRequestMethod())){
+                String gelen = islem.getRequestURI().getQuery();
+                String[] parcaciklar = gelen.split("&");
+                int ID = Integer.valueOf(parcaciklar[0].split("=")[1]);
+                boolean eklemi = Boolean.valueOf(parcaciklar[1].split("=")[1]);
+                String mesaj = kitapServisi.KitapAdetCikartEkle(ID,eklemi);
+                if(!mesaj.isEmpty()){
+                    islem.sendResponseHeaders(200,mesaj.getBytes().length);
+                }
+                else{
+                    mesaj += "Bir hata oluştu?!?!!?!?";
+                    islem.sendResponseHeaders(500,mesaj.getBytes().length);
+                }
+                OutputStream gonder = islem.getResponseBody();
+                gonder.write(mesaj.getBytes());
+                gonder.close();
+            }
+        }));
+
         server.start();
     }
 }
