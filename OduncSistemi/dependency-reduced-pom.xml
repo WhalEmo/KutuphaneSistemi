@@ -18,7 +18,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>TestMain</mainClass>
+                  <mainClass>OduncAPI</mainClass>
                 </transformer>
               </transformers>
             </configuration>

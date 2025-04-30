@@ -14,13 +14,13 @@ public class KitapServisi {
         if(!k2.getYazar().isEmpty()){
             k1.setYazar(k2.getYazar());
         }
-        if(!(k2.getYayinYili() == 0)){
+        if(!(k2.getYayinYili() == -1)){
             k1.setYayinYili(k2.getYayinYili());
         }
         if(!k2.getISBN().isEmpty()){
             k1.setISBN(k2.getISBN());
         }
-        if(!(k2.getAdet() == 0)){
+        if(!(k2.getAdet() == -1)){
             k1.setAdet(k2.getAdet());
         }
         return k1;

@@ -29,15 +29,18 @@ public class KullaniciAPI {
                 email = URLDecoder.decode(email, StandardCharsets.UTF_8);
                 String sifre = params[1].split("=")[1];
                 sifre = URLDecoder.decode(sifre,StandardCharsets.UTF_8);
-
+                System.out.println(email);
+                System.out.println(sifre);
                 int ID = kullaniciServisi.KullaniciGiris(email, sifre);
 
                 String response;
                 if (ID != -1) {
                     response = "Giriş başarılı! Kullanıcı: " + ID;
+                    System.out.println("giris");
                     exchange.sendResponseHeaders(200, response.getBytes().length);
                 }
                 else {
+                    System.out.println("basarisiz");
                     response = "E-posta veya şifre hatalı!";
                     exchange.sendResponseHeaders(500, response.getBytes().length);
                 }

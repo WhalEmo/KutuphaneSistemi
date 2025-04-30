@@ -32,6 +32,7 @@ public class OduncServisi {
             }
 
         }catch (Exception e){
+            System.out.println("---***--");
             System.out.println("Hata: " + e.getMessage());
         }
         return false;

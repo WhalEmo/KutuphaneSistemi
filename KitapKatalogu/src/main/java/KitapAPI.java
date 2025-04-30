@@ -126,7 +126,7 @@ public class KitapAPI {
             }
         }));
 
-        server.createContext("kitapec",(islem->{
+        server.createContext("/kitapec",(islem->{
             if("GET".equals(islem.getRequestMethod())){
                 String gelen = islem.getRequestURI().getQuery();
                 String[] parcaciklar = gelen.split("&");

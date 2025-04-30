@@ -37,6 +37,8 @@ services:
 
   odunc-servisi:
     build: ./OduncSistemi
+    ports:
+      - "1808:1808"
     depends_on:
       - veritabani
     command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "oduncservis.jar"]
