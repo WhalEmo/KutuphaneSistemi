@@ -30,11 +30,11 @@ public class KullaniciAPI {
                 String sifre = params[1].split("=")[1];
                 sifre = URLDecoder.decode(sifre,StandardCharsets.UTF_8);
 
-                Kullanici kullanici = kullaniciServisi.KullaniciGiris(email, sifre);
+                int ID = kullaniciServisi.KullaniciGiris(email, sifre);
 
                 String response;
-                if (kullanici != null) {
-                    response = "Giriş başarılı! Kullanıcı: " + kullanici.getAd();
+                if (ID != -1) {
+                    response = "Giriş başarılı! Kullanıcı: " + ID;
                     exchange.sendResponseHeaders(200, response.getBytes().length);
                 }
                 else {

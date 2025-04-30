@@ -3,7 +3,7 @@ import java.time.LocalDate;
 
 public class KullaniciServisi {
 
-    public Kullanici KullaniciGiris(String email, String sifre){
+    public int KullaniciGiris(String email, String sifre){
         String sql = "SELECT * FROM kullanici WHERE Email = ? AND Sifre = ?";
 
         try (Connection baglanti = VeriTabaniBaglantisi.Baglanti();
@@ -18,16 +18,26 @@ public class KullaniciServisi {
                 Kullanici kullanici = new Kullanici(rs.getString("KayitTarihi"),rs.getString("DogumTarihi"),rs.getString("Cinsiyet").charAt(0),rs.getString("S" +
                         "ifre"),rs.getString("Email"),rs.getString("Soyad"),rs.getString("Ad"),Integer.valueOf(rs.getString("ID")));
                 System.out.println("Kullanıcı başarıyla giriş yaptı!");
-                return kullanici;
+                return kullanici.getID();
             } else {
                 System.out.println("Hatalı e-posta veya şifre!");
-                return null;
+                return -1;
             }
 
         } catch (Exception e) {
             System.out.println("Veritabanı hatası: " + e.getMessage());
-            return null;
+            return -1;
         }
+    }
+
+    public boolean KullaniciAra(int ID){
+        String sql = "SELECT * FROM kullanici WHERE Email = ? AND Sifre = ?";
+        try {
+
+        }catch (Exception e){
+            System.out.println("Hata: "+ e.getMessage());
+        }
+        return false;
     }
 
     public boolean KullaniciKaydi(Kullanici kullanici) {
