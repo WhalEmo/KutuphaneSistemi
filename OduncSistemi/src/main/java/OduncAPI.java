@@ -69,14 +69,10 @@ public class OduncAPI {
                         gonder.close();
                         return;
                     }
-                    HttpRequest istek1 = HttpRequest.newBuilder()
-                            .uri(URI.create("http://kitap-servisi:2402/kitapec?id="+odunc.getKitapID()+"&soru=false"))
-                            .GET()
-                            .build();
-                    HttpResponse<String> cevap1 = istemci.send(istek1,HttpResponse.BodyHandlers.ofString());
-                    gelenCevap = cevap1.body();
-                    gelenKod = cevap1.statusCode();
-                    int Karar = Integer.valueOf(gelenCevap.split(":")[1]);
+                    String cevap1 = IstekEC(istemci,odunc.getKitapID(),"false");
+                    gelenCevap = cevap1.split(":")[0];
+                    gelenKod = Integer.valueOf(cevap1.split(":")[2]);
+                    int Karar = Integer.valueOf(cevap1.split(":")[1]);
                     System.out.println(Karar);
                     System.out.println(gelenCevap.split(":")[0]);
                     if(Karar!=2 || gelenKod==500){
@@ -101,6 +97,50 @@ public class OduncAPI {
                 }
             }
         }));
+
+        server.createContext("/iade",(islem->{
+            if("GET".equals(islem.getRequestMethod())){
+                String gelenVeriler = islem.getRequestURI().getQuery();
+                int O_ID = Integer.valueOf(gelenVeriler.split("=")[1]);
+                String mesaj;
+                OutputStream gonder = islem.getResponseBody();
+                int K_ID = oduncServisi.IadeIslemi(O_ID);
+                if(K_ID==-1){
+                    mesaj = "İade işleminde hata oldu:-1";
+                    islem.sendResponseHeaders(500,mesaj.getBytes().length);
+                    gonder.write(mesaj.getBytes());
+                    gonder.close();
+                    return;
+                }
+                HttpClient istemci = HttpClient.newHttpClient();
+                String cevap = IstekEC(istemci,K_ID,"true");
+                mesaj = cevap.split(":")[0];
+                int Kod = Integer.valueOf(cevap.split(":")[1]);
+                if(Kod==3){
+                    islem.sendResponseHeaders(200,mesaj.getBytes().length);
+                }
+                else{
+                    islem.sendResponseHeaders(500,mesaj.getBytes().length);
+                }
+                gonder.write(mesaj.getBytes());
+                gonder.close();
+            }
+        }));
+
         server.start();
+    }
+
+    public static String IstekEC(HttpClient istemci, int ID,String bool){
+        HttpRequest istek = HttpRequest.newBuilder()
+                .uri(URI.create("http://kitap-servisi:2402/kitapec?id="+ID+"&soru="+bool))
+                .GET()
+                .build();
+        HttpResponse<String> cevap = null;
+        try {
+            cevap = istemci.send(istek, HttpResponse.BodyHandlers.ofString());
+        }catch (Exception e){
+            System.out.println("Hata: "+e.getMessage());
+        }
+        return cevap.body()+ ":" +cevap.statusCode();
     }
 }
