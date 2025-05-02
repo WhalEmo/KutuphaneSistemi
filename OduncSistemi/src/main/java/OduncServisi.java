@@ -48,10 +48,11 @@ public class OduncServisi {
                 System.out.println("Ödünç sisteminde böyle bir kayıt yok!!");
                 return -1;
             }
-            sqlSorgu = "UPDATE Odunc SET TeslimEdildi = ? WHERE ID = ?";
+            sqlSorgu = "UPDATE Odunc SET TeslimEdildi = ? WHERE ID = ? AND TeslimEdildi = ?";
             PreparedStatement sorgu2 = baglanti.prepareStatement(sqlSorgu);
             sorgu2.setBoolean(1,true);
             sorgu2.setInt(2,ID);
+         //   sorgu2.setBoolean();
             int etkilenensatir = sorgu2.executeUpdate();
             if(etkilenensatir>0){
                 System.out.println("İade işlemi başarılı!!");
