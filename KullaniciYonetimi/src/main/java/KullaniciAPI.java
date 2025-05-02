@@ -100,6 +100,24 @@ public class KullaniciAPI {
             }
         }));
 
+        server.createContext("/IDAra",(islem->{
+            if("GET".equals(islem.getRequestMethod())){
+                String gelen = islem.getRequestURI().getQuery();
+                int ID = Integer.valueOf(gelen.split("=")[1]);
+                String email = kullaniciServisi.KullaniciAra(ID);
+                if(email!=null){
+                    islem.sendResponseHeaders(200,email.getBytes().length);
+                }
+                else{
+                    email = "";
+                    islem.sendResponseHeaders(500,email.getBytes().length);
+                }
+                OutputStream gonder = islem.getResponseBody();
+                gonder.write(email.getBytes());
+                gonder.close();
+            }
+        }));
+
         server.start();
         System.out.println("Kullanici API server'ı http://localhost:8080 adresinde çalışıyor...");
     }

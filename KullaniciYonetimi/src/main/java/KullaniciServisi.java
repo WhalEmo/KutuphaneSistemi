@@ -30,14 +30,25 @@ public class KullaniciServisi {
         }
     }
 
-    public boolean KullaniciAra(int ID){
-        String sql = "SELECT * FROM kullanici WHERE Email = ? AND Sifre = ?";
+    public String KullaniciAra(int ID){
+        String sql = "SELECT * FROM Kullanici WHERE ID = ?";
         try {
+            Connection baglanti = VeriTabaniBaglantisi.Baglanti();
+            PreparedStatement sorgu = baglanti.prepareStatement(sql);
+            sorgu.setInt(1,ID);
+            ResultSet sonuc = sorgu.executeQuery();
+
+            if(sonuc.next()){
+                return sonuc.getString("Email");
+            }
+            else{
+                return null;
+            }
 
         }catch (Exception e){
             System.out.println("Hata: "+ e.getMessage());
         }
-        return false;
+        return null;
     }
 
     public boolean KullaniciKaydi(Kullanici kullanici) {
