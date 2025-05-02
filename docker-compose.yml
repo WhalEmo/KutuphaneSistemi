@@ -43,6 +43,14 @@ services:
       - veritabani
     command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "oduncservis.jar"]
 
+  bildirim-servisi:
+    build: ./BildirimYonetimi
+    ports:
+      - "2005:2005"
+    depends_on:
+      - veritabani
+    command: ["/wait-for-it.sh", "veritabani:5432", "--", "java", "-jar", "bildirimservis.jar"]
+
 
 volumes:
   postgres_data:
