@@ -69,6 +69,25 @@ public class OduncServisi {
         }
         return -1;
     }
+
+    public String KullaniciOduncKayitlari(){
+        String sqlSorgu = "SELECT * FROM Odunc WHERE TeslimEdildi = ?";
+        try {
+            Connection baglanti = VeriTabaniBaglantisi.Baglanti();
+            PreparedStatement sorgu = baglanti.prepareStatement(sqlSorgu);
+            sorgu.setBoolean(1,false);
+            ResultSet sonuc = sorgu.executeQuery();
+            String veriler = "";
+            while (sonuc.next()){
+                veriler += sonuc.getInt("KullaniciID") + ":" + sonuc.getString("IadeTarihi") + ":" + sonuc.getInt("KitapID") + ",";
+            }
+            return veriler;
+        }catch (Exception e){
+            System.out.println("Hata: "+e.getMessage());
+        }
+        return "";
+    }
+
     public String UTF8(String metin){
         return URLDecoder.decode(metin, StandardCharsets.UTF_8);
     }

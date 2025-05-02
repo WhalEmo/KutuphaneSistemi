@@ -127,6 +127,21 @@ public class OduncAPI {
             }
         }));
 
+        server.createContext("/kullanicikayitlari", (islem->{
+            if("GET".equals(islem.getRequestMethod())){
+                String mesaj = oduncServisi.KullaniciOduncKayitlari();
+                if(mesaj.isEmpty()){
+                    islem.sendResponseHeaders(500,mesaj.getBytes().length);
+                }
+                else{
+                    islem.sendResponseHeaders(200,mesaj.getBytes().length);
+                }
+                OutputStream gonder = islem.getResponseBody();
+                gonder.write(mesaj.getBytes());
+                gonder.close();
+            }
+        }));
+
         server.start();
     }
 
