@@ -1,3 +1,4 @@
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.BufferedReader;
@@ -22,6 +23,7 @@ public class KullaniciAPI {
         }
 
         server.createContext("/giris", (exchange -> {
+            ServerAyarlari(exchange);
             if ("GET".equals(exchange.getRequestMethod())) {
                 String query = exchange.getRequestURI().getQuery();
                 String[] params = query.split("&");
@@ -51,6 +53,7 @@ public class KullaniciAPI {
         }));
 
         server.createContext("/kayit", (exchange -> {
+            ServerAyarlari(exchange);
             if ("POST".equals(exchange.getRequestMethod())) {
                 InputStreamReader isr = new InputStreamReader(exchange.getRequestBody());
                 BufferedReader br = new BufferedReader(isr);
@@ -101,6 +104,7 @@ public class KullaniciAPI {
         }));
 
         server.createContext("/IDAra",(islem->{
+            ServerAyarlari(islem);
             if("GET".equals(islem.getRequestMethod())){
                 String gelen = islem.getRequestURI().getQuery();
                 int ID = Integer.valueOf(gelen.split("=")[1]);
@@ -120,5 +124,11 @@ public class KullaniciAPI {
 
         server.start();
         System.out.println("Kullanici API server'ı http://localhost:8080 adresinde çalışıyor...");
+    }
+
+    public static void ServerAyarlari(HttpExchange islem){
+        islem.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        islem.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        islem.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
     }
 }

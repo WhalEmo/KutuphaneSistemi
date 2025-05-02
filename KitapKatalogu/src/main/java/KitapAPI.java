@@ -1,3 +1,4 @@
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.BufferedReader;
@@ -18,6 +19,7 @@ public class KitapAPI {
         }
 
         server.createContext("/kitapAra",(islem->{
+            ServerAyarlari(islem);
             if("GET".equals(islem.getRequestMethod())){
                 String Gelen = islem.getRequestURI().getQuery();
                 int ID = Integer.valueOf(Gelen.split("=")[1]);
@@ -38,6 +40,7 @@ public class KitapAPI {
         }));
 
         server.createContext("/kitapGuncelle",(islem->{
+            ServerAyarlari(islem);
             if("POST".equals(islem.getRequestMethod())){
                 InputStreamReader isr = new InputStreamReader(islem.getRequestBody());
                 BufferedReader br = new BufferedReader(isr);
@@ -64,6 +67,7 @@ public class KitapAPI {
             }
         }));
         server.createContext("/kitapEkle",(islem->{
+            ServerAyarlari(islem);
             if("POST".equals(islem.getRequestMethod())){
                 InputStreamReader isr = new InputStreamReader(islem.getRequestBody());
                 BufferedReader br = new BufferedReader(isr);
@@ -90,6 +94,7 @@ public class KitapAPI {
             }
         }));
         server.createContext("/kitapTarih",(islem->{
+            ServerAyarlari(islem);
             if("GET".equals(islem.getRequestMethod())){
                 String gelen = islem.getRequestURI().getQuery();
                 String[] parcaciklar = gelen.split("&");
@@ -110,6 +115,7 @@ public class KitapAPI {
             }
         }));
         server.createContext("/tumKitaplar",(islem->{
+            ServerAyarlari(islem);
             if("GET".equals(islem.getRequestMethod())){
                 ArrayList<Kitap> kitaplar = kitapServisi.TumKitaplar();
                 String mesaj = kitapServisi.KitaplarText(kitaplar);
@@ -127,6 +133,7 @@ public class KitapAPI {
         }));
 
         server.createContext("/kitapec",(islem->{
+            ServerAyarlari(islem);
             if("GET".equals(islem.getRequestMethod())){
                 String gelen = islem.getRequestURI().getQuery();
                 String[] parcaciklar = gelen.split("&");
@@ -147,5 +154,10 @@ public class KitapAPI {
         }));
 
         server.start();
+    }
+    public static void ServerAyarlari(HttpExchange islem){
+        islem.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        islem.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        islem.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
     }
 }

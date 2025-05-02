@@ -1,3 +1,4 @@
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ public class OduncAPI {
             throw new RuntimeException(e);
         }
         server.createContext("/oduncal",(islem->{
+            ServerAyarlari(islem);
             if("POST".equals(islem.getRequestMethod())){
                 InputStreamReader isr = new InputStreamReader(islem.getRequestBody());
                 BufferedReader br = new BufferedReader(isr);
@@ -99,6 +101,7 @@ public class OduncAPI {
         }));
 
         server.createContext("/iade",(islem->{
+            ServerAyarlari(islem);
             if("GET".equals(islem.getRequestMethod())){
                 String gelenVeriler = islem.getRequestURI().getQuery();
                 int O_ID = Integer.valueOf(gelenVeriler.split("=")[1]);
@@ -128,6 +131,7 @@ public class OduncAPI {
         }));
 
         server.createContext("/kullanicikayitlari", (islem->{
+            ServerAyarlari(islem);
             if("GET".equals(islem.getRequestMethod())){
                 String mesaj = oduncServisi.KullaniciOduncKayitlari();
                 if(mesaj.isEmpty()){
@@ -157,5 +161,11 @@ public class OduncAPI {
             System.out.println("Hata: "+e.getMessage());
         }
         return cevap.body()+ ":" +cevap.statusCode();
+    }
+
+    public static void ServerAyarlari(HttpExchange islem){
+        islem.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+        islem.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        islem.getResponseHeaders().add("Access-Control-Allow-Headers", "*");
     }
 }
